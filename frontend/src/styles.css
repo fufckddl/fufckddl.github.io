@@ -658,42 +658,59 @@ svg {
 }
 
 .experience {
-  max-width: none;
-  padding-right: max(clamp(24px, 4vw, 48px), calc((100vw - var(--max)) / 2 + 48px));
-  padding-left: max(clamp(24px, 4vw, 48px), calc((100vw - var(--max)) / 2 + 48px));
   border-bottom: 1px solid var(--line-strong);
-  background: var(--surface);
-}
-
-.experience .section-index,
-.experience h2 {
-  max-width: var(--max);
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.timeline {
-  max-width: var(--max);
-  margin: 48px auto 0;
-  border: 1px solid var(--line-strong);
   background: var(--bg);
 }
 
-.timeline article {
+.timeline {
   display: grid;
-  grid-template-columns: 36px minmax(144px, 0.15fr) minmax(220px, 0.26fr) 1fr 54px;
-  gap: 20px;
-  align-items: center;
-  min-height: 112px;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
 }
 
-.timeline article:last-child {
-  border-bottom: 0;
+.timeline article {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px 1fr 48px;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 18px 14px;
+  align-items: start;
+  min-height: 300px;
+  padding: 26px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.timeline article::before,
+.skill-group::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--accent);
+  content: "";
+}
+
+.timeline article:hover,
+.timeline article:focus-within,
+.skill-group:hover,
+.skill-group:focus-within {
+  border-color: var(--ink);
+  background: var(--project-hover);
+  box-shadow: 8px 8px 0 var(--soft-shadow);
+  transform: translateY(-2px);
 }
 
 .timeline-marker {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
   width: 12px;
   height: 12px;
   background: var(--accent);
@@ -701,6 +718,9 @@ svg {
 }
 
 .timeline small {
+  grid-column: 2 / -1;
+  grid-row: 1;
+  align-self: center;
   color: var(--muted);
   font-size: 14px;
   font-weight: 800;
@@ -708,6 +728,8 @@ svg {
 }
 
 .timeline h3 {
+  grid-column: 1 / -1;
+  grid-row: 2;
   margin: 0;
   color: var(--ink);
   font-size: 23px;
@@ -716,6 +738,8 @@ svg {
 }
 
 .timeline p {
+  grid-column: 1 / -1;
+  grid-row: 3;
   margin: 0;
   color: var(--ink-soft);
   font-size: 16px;
@@ -723,6 +747,9 @@ svg {
 }
 
 .timeline-detail-button {
+  grid-column: 3;
+  grid-row: 4;
+  justify-self: end;
   display: grid;
   place-items: center;
   width: 42px;
@@ -753,21 +780,15 @@ svg {
 .profile-detail-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  max-width: var(--max);
-  margin: 36px auto 0;
-  border: 1px solid var(--line-strong);
-  background: var(--bg);
+  gap: 18px;
+  margin-top: 36px;
 }
 
 .profile-detail-card {
   min-width: 0;
   padding: 24px;
-  border-right: 1px solid var(--line);
-}
-
-.profile-detail-card:last-child {
-  border-right: 0;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
 }
 
 .profile-detail-card h3 {
@@ -819,26 +840,26 @@ svg {
 
 .skill-groups {
   display: grid;
-  gap: 0;
-  border: 1px solid var(--line-strong);
-  background: var(--surface);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .skill-group {
-  display: grid;
-  grid-template-columns: 210px 1fr;
-  gap: 24px;
+  position: relative;
   min-width: 0;
   padding: 26px;
-  border-bottom: 1px solid var(--line);
-}
-
-.skill-group:last-child {
-  border-bottom: 0;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 .skill-group h3 {
-  margin: 0;
+  margin: 0 0 24px;
   color: var(--accent-dark);
   font-size: 14px;
   font-weight: 800;
@@ -862,8 +883,8 @@ svg {
   justify-items: center;
   min-height: 150px;
   padding: 18px 12px 16px;
-  border: 1px solid var(--thin-line);
-  background: var(--bg);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--ink);
   transition:
     border-color 180ms ease,
@@ -874,8 +895,8 @@ svg {
 
 .skill-card:hover {
   border-color: var(--accent-dark);
-  background: var(--surface-hover);
-  box-shadow: 5px 5px 0 var(--accent-shadow);
+  background: var(--accent-wash);
+  box-shadow: none;
   transform: translateY(-2px);
 }
 
@@ -918,8 +939,8 @@ html[data-theme="dark"] .skill-icon-frame img.is-dark-restored {
 }
 
 .projects {
-  padding-top: 108px;
-  background: var(--surface);
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--bg);
 }
 
 .project-list {
@@ -940,7 +961,7 @@ html[data-theme="dark"] .skill-icon-frame img.is-dark-restored {
   overflow: hidden;
   border: 1px solid var(--line-strong);
   outline: 0;
-  background: var(--bg);
+  background: var(--surface);
   color: inherit;
   text-align: left;
   transition:
@@ -1649,16 +1670,12 @@ html[data-theme="dark"] .github-square {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+
   .profile-detail-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .profile-detail-card:nth-child(2n) {
-    border-right: 0;
-  }
-
-  .profile-detail-card:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--line);
   }
 
   .project-detail {
@@ -1835,22 +1852,18 @@ html[data-theme="dark"] .github-square {
   .capability-grid,
   .project-list,
   .profile-detail-grid,
-  .skill-group {
+  .skill-groups {
     grid-template-columns: 1fr;
   }
 
   .capability,
   .capability:nth-child(2n),
-  .capability:nth-child(-n + 2),
-  .profile-detail-card,
-  .profile-detail-card:nth-child(2n),
-  .profile-detail-card:nth-child(-n + 2) {
+  .capability:nth-child(-n + 2) {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
 
-  .capability:last-child,
-  .profile-detail-card:last-child {
+  .capability:last-child {
     border-bottom: 0;
   }
 

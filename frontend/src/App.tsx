@@ -433,7 +433,9 @@ export default function App() {
           <div className="section-index" aria-hidden="true">
             02
           </div>
-          <h2 id="experience-title">경험</h2>
+          <div className="section-heading section-heading-solo">
+            <h2 id="experience-title">경험</h2>
+          </div>
           <div className="timeline">
             {portfolio.experiences.map((experience, index) => (
               <article className="reveal-on-scroll" key={`${experience.title}-${experience.period ?? index}`}>
