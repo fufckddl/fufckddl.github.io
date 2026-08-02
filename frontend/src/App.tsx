@@ -25,24 +25,36 @@ const projectTones = ["tone-teal", "tone-clay", "tone-cream"] as const;
 
 const projectImages = {
   GisDataHub: {
-    imageSrc: "/assets/projects/notion-gisdatahub.webp",
-    imageAlt: "공공데이터 기반 공간정보 통합 대시보드를 소개하는 GIS 데이터 허브 커버",
+    imageSrc: "/assets/projects/cover-gisdatahub.webp",
+    imageAlt: "서울 CCTV 밀도 지도 화면과 GisDataHub 프로젝트명이 포함된 대표 이미지",
+  },
+  GitCard: {
+    imageSrc: "/assets/projects/cover-gitcard.webp",
+    imageAlt: "GitHub README 제작 서비스 로그인 화면과 GitCard 프로젝트명이 포함된 대표 이미지",
   },
   HoseoLife: {
-    imageSrc: "/assets/projects/notion-hoseolife.webp",
-    imageAlt: "호서대학교 커뮤니티 앱 화면을 담은 HoseoLife 프로젝트 커버",
+    imageSrc: "/assets/projects/cover-hoseolife.webp",
+    imageAlt: "호서대학교 커뮤니티 모바일 화면과 HoseoLife 프로젝트명이 포함된 대표 이미지",
+  },
+  SummarIQ: {
+    imageSrc: "/assets/projects/cover-summariq.webp",
+    imageAlt: "회의 음성 파형과 요약 작업 화면을 표현한 SummarIQ 대표 이미지",
   },
   OneLineMind: {
-    imageSrc: "/assets/projects/onelinemind-activity.png",
-    imageAlt: "OneLineMind 앱의 활동 선택 화면",
+    imageSrc: "/assets/projects/cover-onelinemind.webp",
+    imageAlt: "활동 선택, 감정 달력, 기록 화면과 OneLineMind 프로젝트명이 포함된 대표 이미지",
   },
   Pitches: {
-    imageSrc: "/assets/projects/notion-pitches.webp",
-    imageAlt: "감정 인식 기반 스피치 코칭 시스템 Pitches 로그인 화면",
+    imageSrc: "/assets/projects/cover-pitches.webp",
+    imageAlt: "발표 감정 분석 모바일 화면과 Pitches 프로젝트명이 포함된 대표 이미지",
   },
   Routy: {
-    imageSrc: "/assets/projects/notion-routy.webp",
-    imageAlt: "소아 ADHD 아동 일상 관리 플랫폼 Routy 캐릭터 커버",
+    imageSrc: "/assets/projects/cover-routy.webp",
+    imageAlt: "소아 ADHD 아동 일상 관리 서비스 화면과 Routy 프로젝트명이 포함된 대표 이미지",
+  },
+  "Korean NLP Models": {
+    imageSrc: "/assets/projects/cover-korean-nlp-models.webp",
+    imageAlt: "감정 분류와 공감 생성 모델 흐름을 표현한 Korean NLP Models 대표 이미지",
   },
 } satisfies Record<string, Pick<Project, "imageSrc" | "imageAlt">>;
 
