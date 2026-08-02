@@ -25,20 +25,24 @@ const projectTones = ["tone-teal", "tone-clay", "tone-cream"] as const;
 
 const projectImages = {
   GisDataHub: {
-    imageSrc: "/assets/projects/gisdatahub-map-preview.png",
-    imageAlt: "서울 지도 위 CCTV 밀도 히트맵과 위치 마커를 표시한 GISDataHub 화면",
+    imageSrc: "/assets/projects/notion-gisdatahub.webp",
+    imageAlt: "공공데이터 기반 공간정보 통합 대시보드를 소개하는 GIS 데이터 허브 커버",
+  },
+  HoseoLife: {
+    imageSrc: "/assets/projects/notion-hoseolife.webp",
+    imageAlt: "호서대학교 커뮤니티 앱 화면을 담은 HoseoLife 프로젝트 커버",
   },
   OneLineMind: {
     imageSrc: "/assets/projects/onelinemind-activity.png",
     imageAlt: "OneLineMind 앱의 활동 선택 화면",
   },
   Pitches: {
-    imageSrc: "/assets/projects/pitches-feature.png",
-    imageAlt: "Pitches.ai 앱의 감정 분석 결과 화면 3개",
+    imageSrc: "/assets/projects/notion-pitches.webp",
+    imageAlt: "감정 인식 기반 스피치 코칭 시스템 Pitches 로그인 화면",
   },
   Routy: {
-    imageSrc: "/assets/projects/ai-hackathon-routy.png",
-    imageAlt: "2025 AI 해커톤 앱의 Routy 소개 화면",
+    imageSrc: "/assets/projects/notion-routy.webp",
+    imageAlt: "소아 ADHD 아동 일상 관리 플랫폼 Routy 캐릭터 커버",
   },
 } satisfies Record<string, Pick<Project, "imageSrc" | "imageAlt">>;
 
