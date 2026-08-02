@@ -607,27 +607,6 @@ svg {
   content: "";
 }
 
-.section-preview {
-  position: absolute;
-  right: auto;
-  bottom: 0;
-  left: max(28px, calc((100vw - var(--max)) / 2 + 34px));
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  min-height: 48px;
-  color: var(--accent-dark);
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.section-preview::before {
-  width: 10px;
-  height: 10px;
-  background: var(--accent);
-  content: "";
-}
-
 .section-index {
   display: inline-flex;
   align-items: center;
@@ -1766,10 +1745,6 @@ html[data-theme="dark"] .github-square {
     max-width: 980px;
   }
 
-  .section-preview {
-    left: 28px;
-  }
-
   .section-heading,
   .about-content,
   .contact,
@@ -1981,11 +1956,6 @@ html[data-theme="dark"] .github-square {
 
   .hero-profile-highlights li:last-child {
     border-bottom: 0;
-  }
-
-  .section-preview {
-    position: static;
-    margin-top: 34px;
   }
 
   .section-heading h2,

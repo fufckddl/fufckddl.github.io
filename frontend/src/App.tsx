@@ -422,9 +422,6 @@ export default function App() {
             </ul>
           </aside>
 
-          <a className="section-preview" href="#about" aria-label="소개 섹션으로 이동">
-            <span>소개</span>
-          </a>
         </section>
 
         <section className="about section-shell reveal-on-scroll" id="about" aria-labelledby="about-title">
