@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Icon } from "./components/Icons";
 import { ProjectVisual } from "./components/ProjectVisual";
 import { fallbackPortfolio } from "./data/fallbackPortfolio";
-import type { PortfolioData, Project } from "./types";
+import type { Experience, PortfolioData, Project } from "./types";
 import "./styles.css";
 
 const sectionIds = {
@@ -109,10 +109,31 @@ const heroStackItems = [
 ] as const;
 
 const featuredProjectNames = new Set(["GisDataHub", "Routy", "Pitches"]);
+const experienceProjectDetails = {
+  "2024.10.25 ~ 27": {
+    projectName: "Pitches",
+    imageSrc: "/assets/projects/notion-pitches.webp",
+    imageAlt: "노션 포트폴리오에 사용된 Pitches 서비스 화면",
+  },
+  "2025.07 - 2025.10": {
+    projectName: "HoseoLife",
+    imageSrc: "/assets/projects/notion-hoseolife.webp",
+    imageAlt: "노션 포트폴리오에 사용된 HoseoLife 모바일 서비스 화면",
+  },
+  "2025.10.24 ~ 26": {
+    projectName: "Routy",
+    imageSrc: "/assets/projects/notion-routy.webp",
+    imageAlt: "노션 포트폴리오에 사용된 Routy 서비스 화면",
+  },
+} as const;
 const themeStorageKey = "changryul-portfolio-theme";
 const portfolioApiUrl = import.meta.env.VITE_PORTFOLIO_API_URL?.trim() || (import.meta.env.DEV ? "/api/portfolio" : null);
 
 type ThemeMode = "light" | "dark";
+type SelectedExperience = {
+  experience: Experience;
+  project: Project;
+};
 
 function getInitialTheme(): ThemeMode {
   if (typeof window === "undefined") {
@@ -164,6 +185,7 @@ function getSkillIconClassName(skill: string) {
 export default function App() {
   const [portfolio, setPortfolio] = useState<PortfolioData>(fallbackPortfolio);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<SelectedExperience | null>(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
@@ -233,13 +255,14 @@ export default function App() {
   }, [portfolio]);
 
   useEffect(() => {
-    if (!selectedProject) {
+    if (!selectedProject && !selectedExperience) {
       return;
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setSelectedProject(null);
+        setSelectedExperience(null);
       }
     };
 
@@ -250,7 +273,7 @@ export default function App() {
       document.body.classList.remove("is-project-detail-open");
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedProject]);
+  }, [selectedExperience, selectedProject]);
 
   const heroLines = useMemo(() => splitHeroTitle(portfolio.hero.title), [portfolio.hero.title]);
   const projects = useMemo(() => portfolio.projects.map(withProjectDetails), [portfolio.projects]);
@@ -259,10 +282,29 @@ export default function App() {
     [projects],
   );
   const selectedProjectLinks = selectedProject ? getProjectLinks(selectedProject) : [];
+  const selectedExperienceLinks = selectedExperience ? getProjectLinks(selectedExperience.project) : [];
   const aboutSummary = portfolio.about.summary?.length
     ? portfolio.about.summary
     : [portfolio.about.description].filter(Boolean);
   const aboutMetrics = portfolio.about.metrics ?? [];
+
+  const openExperienceDetail = (experience: Experience) => {
+    const detail = experienceProjectDetails[experience.period as keyof typeof experienceProjectDetails];
+    const project = detail ? projects.find((item) => item.name === detail.projectName) : undefined;
+
+    if (!detail || !project) {
+      return;
+    }
+
+    setSelectedExperience({
+      experience,
+      project: {
+        ...project,
+        imageSrc: detail.imageSrc,
+        imageAlt: detail.imageAlt,
+      },
+    });
+  };
 
   return (
     <>
@@ -348,8 +390,8 @@ export default function App() {
 
             <div className="product-console" aria-label="대표 스택과 프로젝트">
               <div className="console-heading">
-                <span>PRODUCT CONSOLE</span>
-                <strong>Evidence Panel</strong>
+                <span>개발 요약</span>
+                <strong>기술과 대표 프로젝트</strong>
               </div>
               <div className="console-stack">
                 {heroStackItems.map((item) => (
@@ -436,13 +478,18 @@ export default function App() {
           <div className="timeline">
             {portfolio.experiences.map((experience, index) => (
               <article className="reveal-on-scroll" key={`${experience.title}-${experience.period ?? index}`}>
-                <span />
+                <span className="timeline-marker" />
                 <small>{experience.period ?? String(index + 1).padStart(2, "0")}</small>
                 <h3>{experience.title}</h3>
                 <p>{experience.description}</p>
-                <a href="#contact" aria-label={`${experience.title} 문의`}>
+                <button
+                  className="timeline-detail-button"
+                  type="button"
+                  aria-label={`${experience.title} 상세 보기`}
+                  onClick={() => openExperienceDetail(experience)}
+                >
                   <Icon name="arrow" />
-                </a>
+                </button>
               </article>
             ))}
           </div>
@@ -647,6 +694,73 @@ export default function App() {
                     rel="noreferrer"
                     target="_blank"
                     aria-label={`${selectedProject.name} ${link.label} GitHub 저장소 열기`}
+                  >
+                    <Icon name="github" />
+                    <span>{link.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {selectedExperience && (
+        <div
+          className="project-detail-backdrop"
+          role="presentation"
+          onClick={() => setSelectedExperience(null)}
+        >
+          <section
+            className="project-detail"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="experience-detail-title"
+            aria-describedby="experience-detail-description"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="detail-close"
+              type="button"
+              aria-label="경험 상세 닫기"
+              onClick={() => setSelectedExperience(null)}
+            >
+              <Icon name="close" />
+            </button>
+            <div className="detail-media">
+              <ProjectVisual
+                imageAlt={selectedExperience.project.imageAlt}
+                imageSrc={selectedExperience.project.imageSrc}
+                type={selectedExperience.project.visualType}
+              />
+            </div>
+            <div className="detail-content">
+              <div className="detail-eyebrow">
+                <span>Experience</span>
+                <span>{selectedExperience.experience.period ?? "기간 정보 없음"}</span>
+              </div>
+              <h2 id="experience-detail-title">{selectedExperience.project.name}</h2>
+              <p id="experience-detail-description">{selectedExperience.experience.description}</p>
+              <dl className="detail-facts">
+                <dt>기간</dt>
+                <dd>{selectedExperience.experience.period ?? "기간 정보 없음"}</dd>
+                <dt>경험</dt>
+                <dd>{selectedExperience.experience.title}</dd>
+              </dl>
+              <div className="tag-list detail-tags">
+                {selectedExperience.project.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+              <div className="detail-actions">
+                {selectedExperienceLinks.map((link) => (
+                  <a
+                    className="github-square"
+                    href={link.href}
+                    key={link.href}
+                    rel="noreferrer"
+                    target="_blank"
+                    aria-label={`${selectedExperience.project.name} ${link.label} GitHub 저장소 열기`}
                   >
                     <Icon name="github" />
                     <span>{link.label}</span>

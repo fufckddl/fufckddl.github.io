@@ -833,7 +833,7 @@ svg {
   border-bottom: 0;
 }
 
-.timeline span {
+.timeline-marker {
   width: 12px;
   height: 12px;
   background: var(--accent);
@@ -862,20 +862,24 @@ svg {
   font-weight: 600;
 }
 
-.timeline a {
+.timeline-detail-button {
   display: grid;
   place-items: center;
   width: 42px;
   height: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--ink);
+  cursor: pointer;
   transition:
     background 180ms ease,
     color 180ms ease,
     transform 180ms ease;
 }
 
-.timeline a:hover,
-.timeline a:focus-visible {
+.timeline-detail-button:hover,
+.timeline-detail-button:focus-visible {
   background: var(--ink);
   color: var(--paper);
   transform: translateX(2px);
@@ -1570,6 +1574,10 @@ html[data-theme="dark"] .tone-cream {
   height: 28px;
 }
 
+html[data-theme="dark"] .github-square {
+  color: #151512;
+}
+
 .contact {
   display: grid;
   grid-template-columns: minmax(150px, 0.22fr) 1fr;
@@ -1860,6 +1868,14 @@ html[data-theme="dark"] .tone-cream {
   .nav-toggle {
     display: inline-flex;
     align-self: center;
+    background: var(--ink);
+    color: var(--bg);
+    cursor: pointer;
+  }
+
+  .nav-toggle svg {
+    width: 22px;
+    height: 22px;
   }
 
   .nav-links {
@@ -2012,7 +2028,7 @@ html[data-theme="dark"] .tone-cream {
     padding: 20px 14px;
   }
 
-  .timeline span {
+  .timeline-marker {
     grid-row: 1 / span 2;
   }
 
@@ -2025,7 +2041,7 @@ html[data-theme="dark"] .tone-cream {
     grid-column: 2 / -1;
   }
 
-  .timeline a {
+  .timeline-detail-button {
     grid-column: 3;
     grid-row: 1 / span 2;
   }

@@ -52,7 +52,7 @@ export const fallbackPortfolio: PortfolioData = {
   projects: [
     {
       name: "GisDataHub",
-      description: "[2026:Project] CCTV 위치와 밀도 데이터를 지도 기반으로 탐색하는 GIS 데이터 허브",
+      description: "[2026:Project] 공공데이터를 지도 기반으로 탐색하고 사용자에게 데이터셋을 제공하는 GIS 데이터 허브",
       tags: ["JavaScript", "Java", "GIS"],
       visualType: "dashboard",
       href: "https://github.com/fufckddl/GISDataHub_FE",
