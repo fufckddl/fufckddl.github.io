@@ -22,9 +22,7 @@ export const fallbackPortfolio: PortfolioData = {
       "빠르게 보이는 화면을 만드는 것보다 끝까지 동작하는 결과물을 남기는 쪽에 무게를 둡니다. 구현 후에는 반응형 레이아웃, 상태 변화, 링크와 배포 가능성을 함께 확인합니다.",
     ],
     metrics: [
-      { value: "8+", label: "정리한 공개 프로젝트" },
       { value: "2회", label: "AI 해커톤 수상 경험" },
-      { value: "Full", label: "Frontend · Backend 연결 구현" },
     ],
     capabilities: [
       {

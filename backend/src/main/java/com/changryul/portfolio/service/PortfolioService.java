@@ -39,9 +39,7 @@ public class PortfolioService {
                 "GIS 데이터 허브, 호서대학교 커뮤니티, AI 회의 요약, 감정 인식 스피치 코칭, 루틴 관리 앱처럼 데이터와 사용 시나리오가 분명한 프로젝트를 만들었습니다.",
                 "빠르게 보이는 화면을 만드는 것보다 끝까지 동작하는 결과물을 남기는 쪽에 무게를 둡니다. 구현 후에는 반응형 레이아웃, 상태 변화, 링크와 배포 가능성을 함께 확인합니다."),
             List.of(
-                new PortfolioResponse.AboutMetric("8+", "정리한 공개 프로젝트"),
-                new PortfolioResponse.AboutMetric("2회", "AI 해커톤 수상 경험"),
-                new PortfolioResponse.AboutMetric("Full", "Frontend · Backend 연결 구현")),
+                new PortfolioResponse.AboutMetric("2회", "AI 해커톤 수상 경험")),
             List.of(
                 new Capability(
                     "사용자 흐름 설계",
