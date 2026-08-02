@@ -52,7 +52,7 @@ export const fallbackPortfolio: PortfolioData = {
   projects: [
     {
       name: "GisDataHub",
-      description: "중앙정보처리기술원 2차 프로젝트. CCTV 위치와 밀도 데이터를 지도 기반으로 탐색하는 GIS 데이터 허브입니다.",
+      description: "[2026:Project] CCTV 위치와 밀도 데이터를 지도 기반으로 탐색하는 GIS 데이터 허브",
       tags: ["JavaScript", "Java", "GIS"],
       visualType: "dashboard",
       href: "https://github.com/fufckddl/GISDataHub_FE",
@@ -83,7 +83,7 @@ export const fallbackPortfolio: PortfolioData = {
     },
     {
       name: "SummarIQ",
-      description: "AI 기반 사용자 회의 요약 및 분석 플랫폼",
+      description: "[2025:Project] AI 기반 사용자 회의 요약 및 분석 플랫폼",
       tags: ["Python", "AI", "Frontend"],
       visualType: "dashboard",
       href: "https://github.com/fufckddl/SummarIQ.ai-FE",
@@ -92,7 +92,7 @@ export const fallbackPortfolio: PortfolioData = {
     },
     {
       name: "OneLineMind",
-      description: "GitHub 공개 저장소",
+      description: "[2025:Project] 감정 기록과 활동 관리를 위한 모바일 다이어리",
       tags: ["Dart", "App", "GitHub"],
       visualType: "checkout",
       href: "https://github.com/fufckddl/OneLineMind",
@@ -101,7 +101,7 @@ export const fallbackPortfolio: PortfolioData = {
     },
     {
       name: "Pitches",
-      description: "[2024 AI 해커톤] 감정인식 기반 AI 스피치 코칭, Pitches.ai (FE)",
+      description: "[2024:AI 해커톤] 감정 인식 기반 AI 스피치 코칭 플랫폼",
       tags: ["AI", "Speech", "Frontend"],
       visualType: "note",
       href: "https://github.com/fufckddl/hackathon-pitches",
@@ -123,7 +123,7 @@ export const fallbackPortfolio: PortfolioData = {
     },
     {
       name: "Korean NLP Models",
-      description: "한국어 텍스트 기반 공감 모델과 감정 인식 모델을 묶은 AI 모델 프로젝트입니다.",
+      description: "[2025:AI Model] 한국어 텍스트 기반 공감·감정 인식 모델",
       tags: ["AI Model", "Korean NLP", "GitHub"],
       visualType: "dashboard",
       href: "https://github.com/fufckddl/KoreanEmpathyModel",
