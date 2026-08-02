@@ -102,13 +102,6 @@ const heroProfileHighlights = [
   "요구사항, 화면 상태, 데이터 흐름을 끝까지 연결해 검증합니다.",
 ] as const;
 
-const heroStackItems = [
-  { name: "Java Spring Boot", detail: "REST API · Security · JPA" },
-  { name: "React TypeScript", detail: "컴포넌트 · 상태 관리 · 테스트" },
-  { name: "MySQL AWS", detail: "데이터 모델 · 배포 흐름" },
-] as const;
-
-const featuredProjectNames = new Set(["GisDataHub", "Routy", "Pitches"]);
 const experienceProjectDetails = {
   "2024.10.25 ~ 27": {
     projectName: "Pitches",
@@ -277,10 +270,6 @@ export default function App() {
 
   const heroLines = useMemo(() => splitHeroTitle(portfolio.hero.title), [portfolio.hero.title]);
   const projects = useMemo(() => portfolio.projects.map(withProjectDetails), [portfolio.projects]);
-  const heroProofProjects = useMemo(
-    () => projects.filter((project) => featuredProjectNames.has(project.name)).slice(0, 3),
-    [projects],
-  );
   const selectedProjectLinks = selectedProject ? getProjectLinks(selectedProject) : [];
   const selectedExperienceLinks = selectedExperience ? getProjectLinks(selectedExperience.project) : [];
   const aboutSummary = portfolio.about.summary?.length
@@ -385,33 +374,6 @@ export default function App() {
                 <span>{portfolio.profile.role}</span>
                 <strong>{portfolio.profile.name}</strong>
                 <p>화면, API, 데이터 흐름을 실제 서비스 단위로 연결하는 풀스택 개발자입니다.</p>
-              </div>
-            </div>
-
-            <div className="product-console" aria-label="대표 스택과 프로젝트">
-              <div className="console-heading">
-                <span>개발 요약</span>
-                <strong>기술과 대표 프로젝트</strong>
-              </div>
-              <div className="console-stack">
-                {heroStackItems.map((item) => (
-                  <div className="console-stack-row" key={item.name}>
-                    <span className="console-icon" aria-hidden="true">
-                      <img alt="" src={getSkillIconSource(item.name.split(" ")[0])} />
-                    </span>
-                    <strong>{item.name}</strong>
-                    <small>{item.detail}</small>
-                  </div>
-                ))}
-              </div>
-              <div className="console-projects">
-                {heroProofProjects.map((project, index) => (
-                  <a href="#projects" key={project.name}>
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    <strong>{project.name}</strong>
-                    <small>{project.tags.slice(0, 2).join(" · ")}</small>
-                  </a>
-                ))}
               </div>
             </div>
 
