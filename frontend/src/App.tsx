@@ -463,7 +463,7 @@ export default function App() {
                     <div className="profile-detail-item" key={`${section.title}-${item.title}`}>
                       {item.period && <small>{item.period}</small>}
                       <strong>{item.title}</strong>
-                      <p>{item.description}</p>
+                      {item.description && <p>{item.description}</p>}
                       {item.meta && <span>{item.meta}</span>}
                     </div>
                   ))}

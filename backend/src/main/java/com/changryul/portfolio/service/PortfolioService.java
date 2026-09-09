@@ -140,7 +140,7 @@ public class PortfolioService {
                 List.of(
                     item(
                         "정보처리기사",
-                        "Notion 포트폴리오에 등록된 자격증입니다.",
+                        "",
                         "2025.12.24"))),
             section(
                 "학력",

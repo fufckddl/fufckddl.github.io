@@ -165,7 +165,7 @@ export const fallbackPortfolio: PortfolioData = {
       items: [
         {
           title: "정보처리기사",
-          description: "Notion 포트폴리오에 등록된 자격증입니다.",
+          description: "",
           period: "2025.12.24",
         },
       ],
