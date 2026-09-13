@@ -53,6 +53,7 @@ class PortfolioControllerTest {
         .andExpect(jsonPath("$.experienceDetails[0].title").value("교육봉사"))
         .andExpect(jsonPath("$.experienceDetails[0].items[0].title").value("호서SW교육봉사단"))
         .andExpect(jsonPath("$.experienceDetails[1].items[0].title").value("정보처리기사"))
+        .andExpect(jsonPath("$.experienceDetails[2].items[0].description").value("졸업, 학점 3.85/4.5"))
         .andExpect(jsonPath("$.skills", hasSize(4)))
         .andExpect(jsonPath("$.skills[0].title").value("Backend & Database"))
         .andExpect(jsonPath("$.skills[0].items[0]").value("Java"))

@@ -220,7 +220,7 @@ export const fallbackPortfolio: PortfolioData = {
       items: [
         {
           title: "호서대학교 컴퓨터공학부",
-          description: "졸업, 학점 3.8/4.5",
+          description: "졸업, 학점 3.85/4.5",
           period: "2020.02 - 2026.02",
         },
         {
