@@ -42,6 +42,12 @@ export type AboutMetric = {
 export type Project = {
   name: string;
   description: string;
+  category?: string;
+  purpose?: string;
+  role?: string;
+  implementation?: string[];
+  verification?: string[];
+  result?: string;
   tags: string[];
   visualType: "note" | "dashboard" | "checkout";
   href: string;
@@ -60,6 +66,7 @@ export type Experience = {
   title: string;
   description: string;
   period?: string;
+  projectName?: string;
 };
 
 export type InfoSection = {

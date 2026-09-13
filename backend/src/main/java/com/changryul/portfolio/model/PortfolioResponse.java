@@ -30,6 +30,12 @@ public record PortfolioResponse(
   public record Project(
       String name,
       String description,
+      String category,
+      String purpose,
+      String role,
+      List<String> implementation,
+      List<String> verification,
+      String result,
       List<String> tags,
       String visualType,
       String href,
@@ -37,7 +43,7 @@ public record PortfolioResponse(
 
   public record ProjectLink(String label, String href) {}
 
-  public record Experience(String title, String description, String period) {}
+  public record Experience(String title, String description, String period, String projectName) {}
 
   public record InfoSection(String title, List<InfoItem> items) {}
 

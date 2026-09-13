@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "./components/Icons";
 import { ProjectVisual } from "./components/ProjectVisual";
 import { fallbackPortfolio } from "./data/fallbackPortfolio";
@@ -24,9 +24,9 @@ function splitHeroTitle(title: string) {
 const projectTones = ["tone-teal", "tone-clay", "tone-cream"] as const;
 
 const projectImages = {
-  GisDataHub: {
+  "GIS Data Research Hub": {
     imageSrc: "/assets/projects/cover-gisdatahub.webp",
-    imageAlt: "서울 CCTV 밀도 지도 화면과 GisDataHub 프로젝트명이 포함된 대표 이미지",
+    imageAlt: "서울 CCTV 밀도 지도 화면과 GIS Data Research Hub 프로젝트명이 포함된 대표 이미지",
   },
   GitCard: {
     imageSrc: "/assets/projects/cover-gitcard.webp",
@@ -48,9 +48,9 @@ const projectImages = {
     imageSrc: "/assets/projects/cover-pitches.webp",
     imageAlt: "발표 감정 분석 모바일 화면과 Pitches 프로젝트명이 포함된 대표 이미지",
   },
-  Routy: {
+  ROUTY: {
     imageSrc: "/assets/projects/cover-routy.webp",
-    imageAlt: "소아 ADHD 아동 일상 관리 서비스 화면과 Routy 프로젝트명이 포함된 대표 이미지",
+    imageAlt: "소아 ADHD 아동 일상 관리 서비스 화면과 ROUTY 프로젝트명이 포함된 대표 이미지",
   },
   "Korean NLP Models": {
     imageSrc: "/assets/projects/cover-korean-nlp-models.webp",
@@ -59,13 +59,13 @@ const projectImages = {
 } satisfies Record<string, Pick<Project, "imageSrc" | "imageAlt">>;
 
 const projectPeriods = {
-  GisDataHub: "2026.05 - 2026.07",
+  "GIS Data Research Hub": "2026.05 - 2026.07",
   GitCard: "2025.12 - 2026.03",
   HoseoLife: "2025.07 - 2025.10",
   SummarIQ: "2025.10 - 2026.03",
   OneLineMind: "2025.06 - 2026.02",
   Pitches: "2024.10.25 ~ 27",
-  Routy: "2025.10.24 ~ 26",
+  ROUTY: "2025.10.24 ~ 26",
   "Korean NLP Models": "2025.06",
 } satisfies Record<string, string>;
 
@@ -87,36 +87,52 @@ const skillIconSources: Record<string, string> = {
   "Korean NLP": "/assets/skills/huggingface.svg",
   "AI Model": "/assets/skills/tensorflow.svg",
   "GIS Data": "/assets/skills/leaflet.svg",
+  MyBatis: "/assets/skills/code.svg",
+  FastAPI: "/assets/skills/python.svg",
+  "PostgreSQL/PostGIS": "/assets/skills/leaflet.svg",
+  Flutter: "/assets/skills/dart.svg",
+  "React Native": "/assets/skills/react.svg",
+  "JUnit 5": "/assets/skills/java.svg",
+  Mockito: "/assets/skills/code.svg",
+  "MyBatis Test": "/assets/skills/code.svg",
+  "AWS EC2·S3·RDS": "/assets/skills/aws.svg",
 };
 
 const skillIconClassNames: Record<string, string> = {
   AWS: "is-dark-restored",
+  "AWS EC2·S3·RDS": "is-dark-restored",
   GitHub: "is-dark-monochrome",
   MySQL: "is-dark-restored",
   "Korean NLP": "is-dark-warm",
 };
 
 const heroProfileHighlights = [
-  "Java/Spring Boot 기반 API와 React 화면을 함께 구현합니다.",
-  "GIS, 커뮤니티, AI 해커톤 프로젝트를 서비스 형태로 완성했습니다.",
-  "요구사항, 화면 상태, 데이터 흐름을 끝까지 연결해 검증합니다.",
+  {
+    title: "서버·데이터",
+    description: "Spring Boot 기반 수집·저장·조회 로직을 구현하고 예외 상황을 테스트했습니다.",
+  },
+  {
+    title: "모바일·API",
+    description: "Flutter·React Native 화면과 서버 API를 연결해 서비스를 구현했습니다.",
+  },
+  {
+    title: "협업·완성",
+    description: "해커톤 팀장으로 구현 범위를 조율하고 핵심 기능의 시연을 완성했습니다.",
+  },
 ] as const;
 
 const experienceProjectDetails = {
-  "2024.10.25 ~ 27": {
-    projectName: "Pitches",
+  Pitches: {
     imageSrc: "/assets/projects/notion-pitches.webp",
     imageAlt: "노션 포트폴리오에 사용된 Pitches 서비스 화면",
   },
-  "2025.07 - 2025.10": {
-    projectName: "HoseoLife",
+  HoseoLife: {
     imageSrc: "/assets/projects/notion-hoseolife.webp",
     imageAlt: "노션 포트폴리오에 사용된 HoseoLife 모바일 서비스 화면",
   },
-  "2025.10.24 ~ 26": {
-    projectName: "Routy",
+  ROUTY: {
     imageSrc: "/assets/projects/notion-routy.webp",
-    imageAlt: "노션 포트폴리오에 사용된 Routy 서비스 화면",
+    imageAlt: "노션 포트폴리오에 사용된 ROUTY 서비스 화면",
   },
 } as const;
 const themeStorageKey = "changryul-portfolio-theme";
@@ -173,6 +189,181 @@ function getSkillIconSource(skill: string) {
 
 function getSkillIconClassName(skill: string) {
   return skillIconClassNames[skill];
+}
+
+type ProjectDetailModalProps = {
+  project: Project;
+  experience?: Experience;
+  onClose: () => void;
+};
+
+function ProjectDetailModal({ project, experience, onClose }: ProjectDetailModalProps) {
+  const dialogRef = useRef<HTMLElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const titleId = experience ? "experience-detail-title" : "project-detail-title";
+  const descriptionId = experience ? "experience-detail-description" : "project-detail-description";
+  const links = getProjectLinks(project);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    document.body.classList.add("is-project-detail-open");
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const focusable = Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      );
+
+      if (focusable.length === 0) {
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.classList.remove("is-project-detail-open");
+      window.removeEventListener("keydown", handleKeyDown);
+      previousFocus?.focus();
+    };
+  }, [onClose]);
+
+  return (
+    <div className="project-detail-backdrop" role="presentation" onClick={onClose}>
+      <section
+        className="project-detail"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        onClick={(event) => event.stopPropagation()}
+        ref={dialogRef}
+      >
+        <button
+          className="detail-close"
+          type="button"
+          aria-label={`${project.name} 상세 닫기`}
+          onClick={onClose}
+          ref={closeButtonRef}
+        >
+          <Icon name="close" />
+        </button>
+        <div className="detail-media">
+          <ProjectVisual imageAlt={project.imageAlt} imageSrc={project.imageSrc} type={project.visualType} />
+        </div>
+        <div className="detail-content">
+          <div className="detail-eyebrow">
+            <span>{experience ? "Experience" : project.category ?? "Project"}</span>
+            <span>{experience?.period ?? project.period ?? "기간 정보 없음"}</span>
+          </div>
+          <h2 id={titleId}>{project.name}</h2>
+          <p id={descriptionId}>{project.description}</p>
+
+          {(project.purpose || project.role) && (
+            <dl className="detail-overview">
+              {project.purpose && (
+                <>
+                  <dt>목적</dt>
+                  <dd>{project.purpose}</dd>
+                </>
+              )}
+              {project.role && (
+                <>
+                  <dt>담당</dt>
+                  <dd>{project.role}</dd>
+                </>
+              )}
+            </dl>
+          )}
+
+          {project.implementation && project.implementation.length > 0 && (
+            <div className="detail-section">
+              <h3>구현 내용</h3>
+              <ul>
+                {project.implementation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {project.verification && project.verification.length > 0 && (
+            <div className="detail-section">
+              <h3>검증</h3>
+              <ul>
+                {project.verification.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {project.result && (
+            <div className="detail-result">
+              <strong>결과</strong>
+              <span>{project.result}</span>
+            </div>
+          )}
+
+          <dl className="detail-facts">
+            <dt>기간</dt>
+            <dd>{experience?.period ?? project.period ?? "기간 정보 없음"}</dd>
+            {experience && (
+              <>
+                <dt>경험</dt>
+                <dd>{experience.title}</dd>
+              </>
+            )}
+            <dt>저장소</dt>
+            <dd>{links.map((link) => getRepositoryName(link.href)).join(" / ")}</dd>
+          </dl>
+          <div className="tag-list detail-tags">
+            {project.tags.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+          <div className="detail-actions">
+            {links.map((link) => (
+              <a
+                className="github-square"
+                href={link.href}
+                key={link.href}
+                rel="noreferrer"
+                target="_blank"
+                aria-label={`${project.name} ${link.label} GitHub 저장소 열기`}
+              >
+                <Icon name="github" />
+                <span>{link.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 export default function App() {
@@ -247,39 +438,19 @@ export default function App() {
     return () => observer.disconnect();
   }, [portfolio]);
 
-  useEffect(() => {
-    if (!selectedProject && !selectedExperience) {
-      return;
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setSelectedProject(null);
-        setSelectedExperience(null);
-      }
-    };
-
-    document.body.classList.add("is-project-detail-open");
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.classList.remove("is-project-detail-open");
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [selectedExperience, selectedProject]);
-
   const heroLines = useMemo(() => splitHeroTitle(portfolio.hero.title), [portfolio.hero.title]);
   const projects = useMemo(() => portfolio.projects.map(withProjectDetails), [portfolio.projects]);
-  const selectedProjectLinks = selectedProject ? getProjectLinks(selectedProject) : [];
-  const selectedExperienceLinks = selectedExperience ? getProjectLinks(selectedExperience.project) : [];
   const aboutSummary = portfolio.about.summary?.length
     ? portfolio.about.summary
     : [portfolio.about.description].filter(Boolean);
   const aboutMetrics = portfolio.about.metrics ?? [];
 
   const openExperienceDetail = (experience: Experience) => {
-    const detail = experienceProjectDetails[experience.period as keyof typeof experienceProjectDetails];
-    const project = detail ? projects.find((item) => item.name === detail.projectName) : undefined;
+    const projectName = experience.projectName;
+    const detail = projectName
+      ? experienceProjectDetails[projectName as keyof typeof experienceProjectDetails]
+      : undefined;
+    const project = projectName ? projects.find((item) => item.name === projectName) : undefined;
 
     if (!detail || !project) {
       return;
@@ -379,7 +550,10 @@ export default function App() {
 
             <ul className="hero-profile-highlights">
               {heroProfileHighlights.map((highlight) => (
-                <li key={highlight}>{highlight}</li>
+                <li key={highlight.title}>
+                  <strong>{highlight.title}</strong>
+                  <span>{highlight.description}</span>
+                </li>
               ))}
             </ul>
           </aside>
@@ -531,7 +705,7 @@ export default function App() {
               >
                 <div className="project-meta">
                   <span>{String(index + 1).padStart(2, "0")}</span>
-                  <span>{project.tags[0]}</span>
+                  <span>{project.category ?? project.tags[0]}</span>
                 </div>
                 <div className="project-media">
                   <ProjectVisual
@@ -598,142 +772,18 @@ export default function App() {
       </main>
 
       {selectedProject && (
-        <div
-          className="project-detail-backdrop"
-          role="presentation"
-          onClick={() => setSelectedProject(null)}
-        >
-          <section
-            className="project-detail"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="project-detail-title"
-            aria-describedby="project-detail-description"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="detail-close"
-              type="button"
-              aria-label="프로젝트 상세 닫기"
-              onClick={() => setSelectedProject(null)}
-            >
-              <Icon name="close" />
-            </button>
-            <div className="detail-media" aria-hidden="true">
-              <ProjectVisual
-                imageAlt={selectedProject.imageAlt}
-                imageSrc={selectedProject.imageSrc}
-                type={selectedProject.visualType}
-              />
-            </div>
-            <div className="detail-content">
-              <div className="detail-eyebrow">
-                <span>Project</span>
-                <span>{selectedProject.period ?? "기간 정보 없음"}</span>
-              </div>
-              <h2 id="project-detail-title">{selectedProject.name}</h2>
-              <p id="project-detail-description">{selectedProject.description}</p>
-              <dl className="detail-facts">
-                <dt>기간</dt>
-                <dd>{selectedProject.period ?? "기간 정보 없음"}</dd>
-                <dt>저장소</dt>
-                <dd>
-                  {selectedProjectLinks.map((link) => getRepositoryName(link.href)).join(" / ")}
-                </dd>
-              </dl>
-              <div className="tag-list detail-tags">
-                {selectedProject.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-              <div className="detail-actions">
-                {selectedProjectLinks.map((link) => (
-                  <a
-                    className="github-square"
-                    href={link.href}
-                    key={link.href}
-                    rel="noreferrer"
-                    target="_blank"
-                    aria-label={`${selectedProject.name} ${link.label} GitHub 저장소 열기`}
-                  >
-                    <Icon name="github" />
-                    <span>{link.label}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
+        <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       )}
 
       {selectedExperience && (
-        <div
-          className="project-detail-backdrop"
-          role="presentation"
-          onClick={() => setSelectedExperience(null)}
-        >
-          <section
-            className="project-detail"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="experience-detail-title"
-            aria-describedby="experience-detail-description"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="detail-close"
-              type="button"
-              aria-label="경험 상세 닫기"
-              onClick={() => setSelectedExperience(null)}
-            >
-              <Icon name="close" />
-            </button>
-            <div className="detail-media">
-              <ProjectVisual
-                imageAlt={selectedExperience.project.imageAlt}
-                imageSrc={selectedExperience.project.imageSrc}
-                type={selectedExperience.project.visualType}
-              />
-            </div>
-            <div className="detail-content">
-              <div className="detail-eyebrow">
-                <span>Experience</span>
-                <span>{selectedExperience.experience.period ?? "기간 정보 없음"}</span>
-              </div>
-              <h2 id="experience-detail-title">{selectedExperience.project.name}</h2>
-              <p id="experience-detail-description">{selectedExperience.experience.description}</p>
-              <dl className="detail-facts">
-                <dt>기간</dt>
-                <dd>{selectedExperience.experience.period ?? "기간 정보 없음"}</dd>
-                <dt>경험</dt>
-                <dd>{selectedExperience.experience.title}</dd>
-              </dl>
-              <div className="tag-list detail-tags">
-                {selectedExperience.project.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-              <div className="detail-actions">
-                {selectedExperienceLinks.map((link) => (
-                  <a
-                    className="github-square"
-                    href={link.href}
-                    key={link.href}
-                    rel="noreferrer"
-                    target="_blank"
-                    aria-label={`${selectedExperience.project.name} ${link.label} GitHub 저장소 열기`}
-                  >
-                    <Icon name="github" />
-                    <span>{link.label}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
+        <ProjectDetailModal
+          experience={selectedExperience.experience}
+          project={selectedExperience.project}
+          onClose={() => setSelectedExperience(null)}
+        />
       )}
 
-      <footer className="site-footer">© Untitled. All rights reserved.</footer>
+      <footer className="site-footer">© 이창렬. All rights reserved.</footer>
     </>
   );
 }
