@@ -15,8 +15,20 @@ const sectionIds = {
 } as const;
 
 const activities = [
-  { title: "호서SW교육봉사단", description: "호서대학교 SW 교육봉사단 활동" },
-  { title: "호서서포터즈", description: "호서대학교 서포터즈 활동" },
+  {
+    title: "호서SW교육봉사단",
+    description: "호서대학교 SW 교육봉사단 활동",
+    period: "2024.03.30 ~ 2025.11.29",
+    imageSrc: "/assets/activities/hoseo-sw-volunteer.webp",
+    imageAlt: "호서SW교육봉사단 발대식 및 SW 역량강화 교육 단체 사진",
+  },
+  {
+    title: "호서서포터즈",
+    description: "호서대학교 서포터즈 활동",
+    period: "2023.03.10 ~ 2025.01.24",
+    imageSrc: "/assets/activities/hoseo-supporters.jpg",
+    imageAlt: "2024학년도 6기 호서서포터즈 발대식 단체 사진",
+  },
 ];
 
 function splitHeroTitle(title: string) {
@@ -628,8 +640,12 @@ export default function App() {
           <div className="activity-list">
             {activities.map((activity) => (
               <article key={activity.title}>
-                <h3>{activity.title}</h3>
-                <p>{activity.description}</p>
+                <div>
+                  <small className="activity-period">{activity.period}</small>
+                  <h3>{activity.title}</h3>
+                  <p>{activity.description}</p>
+                </div>
+                <img className="activity-image" src={activity.imageSrc} alt={activity.imageAlt} loading="lazy" />
               </article>
             ))}
           </div>
