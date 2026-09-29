@@ -199,7 +199,10 @@ public class PortfolioService {
                         "중앙정보기술인재개발원",
                         "클라우드 데브옵스 프론트엔드&백엔드 자바(JAVA) 풀스택 개발자 취업캠프",
                         "2025.12 - 2026.06"),
-                    item("SBS아카데미", "웹 프로젝트 및 Java, Python, C++ 교육", "2025.01 - 2025.11")))),
+                    item("SBS아카데미", "웹 프로젝트 및 Java, Python, C++ 교육", "2025.01 - 2025.11"))),
+            section(
+                "어학",
+                List.of(item("TOEIC Speaking IM2", "", "취득일 2026.09.12")))),
         List.of(
             new SkillGroup(
                 "Backend & Database",

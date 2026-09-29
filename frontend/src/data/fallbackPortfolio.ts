@@ -245,6 +245,16 @@ export const fallbackPortfolio: PortfolioData = {
         },
       ],
     },
+    {
+      title: "어학",
+      items: [
+        {
+          title: "TOEIC Speaking IM2",
+          description: "",
+          period: "취득일 2026.09.12",
+        },
+      ],
+    },
   ],
   skills: [
     {
