@@ -15,13 +15,11 @@ const sectionIds = {
 
 function splitHeroTitle(title: string) {
   if (title === fallbackPortfolio.hero.title) {
-    return ["서비스를", "끝까지 구현하는", "풀스택 개발자"];
+    return ["서비스를 끝까지 구현하는", "풀스택 개발자"];
   }
 
   return title.split(" ");
 }
-
-const projectTones = ["tone-teal", "tone-clay", "tone-cream"] as const;
 
 const projectImages = {
   "GIS Data Research Hub": {
@@ -105,21 +103,6 @@ const skillIconClassNames: Record<string, string> = {
   MySQL: "is-dark-restored",
   "Korean NLP": "is-dark-warm",
 };
-
-const heroProfileHighlights = [
-  {
-    title: "서버·데이터",
-    description: "Spring Boot 기반 수집·저장·조회 로직을 구현하고 예외 상황을 테스트했습니다.",
-  },
-  {
-    title: "모바일·API",
-    description: "Flutter·React Native 화면과 서버 API를 연결해 서비스를 구현했습니다.",
-  },
-  {
-    title: "협업·완성",
-    description: "해커톤 팀장으로 구현 범위를 조율하고 핵심 기능의 시연을 완성했습니다.",
-  },
-] as const;
 
 const experienceProjectDetails = {
   Pitches: {
@@ -372,6 +355,28 @@ export default function App() {
   const [selectedExperience, setSelectedExperience] = useState<SelectedExperience | null>(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+  const [activeSection, setActiveSection] = useState("about");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActiveSection(entry.target.id);
+      });
+    }, { rootMargin: "-15% 0px -65% 0px", threshold: 0 });
+    Object.values(sectionIds).forEach((id) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsNavOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -411,33 +416,6 @@ export default function App() {
     return () => controller.abort();
   }, []);
 
-  useEffect(() => {
-    const elements = Array.from(document.querySelectorAll<HTMLElement>(".reveal-on-scroll"));
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
-      elements.forEach((element) => element.classList.add("is-visible"));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            return;
-          }
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        });
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
-    );
-
-    elements.forEach((element) => observer.observe(element));
-
-    return () => observer.disconnect();
-  }, [portfolio]);
-
   const heroLines = useMemo(() => splitHeroTitle(portfolio.hero.title), [portfolio.hero.title]);
   const projects = useMemo(() => portfolio.projects.map(withProjectDetails), [portfolio.projects]);
   const aboutSummary = portfolio.about.summary?.length
@@ -468,19 +446,20 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-link" href="#main-content">본문으로 이동</a>
       <header className="site-header">
         <a className="brand" href="#home" aria-label="처음으로 이동">
-          <span className="brand-mark">CL</span>
           <span className="brand-copy">
             <strong>{portfolio.profile.brand}</strong>
             <small>{portfolio.profile.role}</small>
           </span>
         </a>
-        <nav className={`nav-links ${isNavOpen ? "is-open" : ""}`} aria-label="주요 섹션">
+        <nav id="main-navigation" className={`nav-links ${isNavOpen ? "is-open" : ""}`} aria-label="주요 섹션">
           {portfolio.profile.navigation.map((label) => (
             <a
               key={label}
               href={`#${sectionIds[label as keyof typeof sectionIds]}`}
+              aria-current={activeSection === sectionIds[label as keyof typeof sectionIds] ? "location" : undefined}
               onClick={() => setIsNavOpen(false)}
             >
               {label}
@@ -504,21 +483,25 @@ export default function App() {
             type="button"
             aria-label={isNavOpen ? "내비게이션 닫기" : "내비게이션 열기"}
             aria-expanded={isNavOpen}
+            aria-controls="main-navigation"
             onClick={() => setIsNavOpen((current) => !current)}
           >
-            <Icon name="menu" />
+            <Icon name={isNavOpen ? "close" : "menu"} />
           </button>
         </div>
       </header>
 
-      <main>
+      <main id="main-content">
         <section className="hero reveal-on-scroll" id="home" aria-labelledby="hero-title">
           <div className="hero-copy">
             <h1 id="hero-title">
+              {portfolio.profile.name}<span className="name-dot">.</span>
+            </h1>
+            <div className="hero-statement">
               {heroLines.map((line) => (
                 <span key={line}>{line}</span>
               ))}
-            </h1>
+            </div>
             <p>{portfolio.hero.description}</p>
             <div className="hero-actions">
               <a className="button button-primary" href="#projects">
@@ -542,28 +525,16 @@ export default function App() {
                 width="250"
               />
               <div className="hero-profile-copy">
-                <span>{portfolio.profile.role}</span>
-                <strong>{portfolio.profile.name}</strong>
-                <p>화면, API, 데이터 흐름을 실제 서비스 단위로 연결하는 풀스택 개발자입니다.</p>
+                <strong>화면에서 데이터까지.</strong>
+                <p>서비스가 동작하는 전체 흐름을 이해하고 구현합니다.</p>
               </div>
             </div>
 
-            <ul className="hero-profile-highlights">
-              {heroProfileHighlights.map((highlight) => (
-                <li key={highlight.title}>
-                  <strong>{highlight.title}</strong>
-                  <span>{highlight.description}</span>
-                </li>
-              ))}
-            </ul>
           </aside>
 
         </section>
 
         <section className="about section-shell reveal-on-scroll" id="about" aria-labelledby="about-title">
-          <div className="section-index" aria-hidden="true">
-            01
-          </div>
           <div className="section-heading section-heading-solo">
             <h2 id="about-title">{portfolio.about.title}</h2>
           </div>
@@ -604,9 +575,6 @@ export default function App() {
           id="experience"
           aria-labelledby="experience-title"
         >
-          <div className="section-index" aria-hidden="true">
-            02
-          </div>
           <div className="section-heading section-heading-solo">
             <h2 id="experience-title">경험</h2>
           </div>
@@ -648,16 +616,13 @@ export default function App() {
         </section>
 
         <section className="skills section-shell reveal-on-scroll" id="skills" aria-labelledby="skills-title">
-          <div className="section-index" aria-hidden="true">
-            03
-          </div>
           <div className="section-heading section-heading-solo">
             <h2 id="skills-title">스킬</h2>
           </div>
           <div className="skill-groups">
             {portfolio.skills.map((group) => (
               <article className="skill-group reveal-on-scroll" key={group.title}>
-                <h3># {group.title.toUpperCase()}</h3>
+                <h3>{group.title}</h3>
                 <ul className="skill-list">
                   {group.items.map((skill) => (
                     <li className="skill-card" key={skill}>
@@ -679,17 +644,14 @@ export default function App() {
         </section>
 
         <section className="projects section-shell" id="projects" aria-labelledby="projects-title">
-          <div className="section-index" aria-hidden="true">
-            04
-          </div>
           <div className="section-heading section-heading-solo">
             <h2 id="projects-title">프로젝트</h2>
           </div>
 
           <div className="project-list">
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <article
-                className={`project-row ${projectTones[index % projectTones.length]} reveal-on-scroll`}
+                className="project-row reveal-on-scroll"
                 key={project.name}
                 role="button"
                 tabIndex={0}
@@ -704,8 +666,8 @@ export default function App() {
                 }}
               >
                 <div className="project-meta">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
                   <span>{project.category ?? project.tags[0]}</span>
+                  <span>{project.period}</span>
                 </div>
                 <div className="project-media">
                   <ProjectVisual
@@ -733,12 +695,12 @@ export default function App() {
         </section>
 
         <section className="contact section-shell reveal-on-scroll" id="contact" aria-labelledby="contact-title">
-          <div className="section-index" aria-hidden="true">
-            05
-          </div>
           <h2 id="contact-title">연락</h2>
           <div className="contact-panel">
-            <p>{portfolio.contact.title}</p>
+            <div className="contact-copy">
+              <p>{portfolio.contact.title}</p>
+              <a className="contact-email" href="mailto:dlckdfuf141@gmail.com">dlckdfuf141@gmail.com</a>
+            </div>
             <div className="contact-actions">
               {portfolio.contact.actions.map((action) => (
                 <a
@@ -783,7 +745,7 @@ export default function App() {
         />
       )}
 
-      <footer className="site-footer">© 이창렬. All rights reserved.</footer>
+      <footer className="site-footer"><span>© Untitled. All rights reserved.</span><a href="#home">맨 위로 <Icon name="arrow" /></a></footer>
     </>
   );
 }

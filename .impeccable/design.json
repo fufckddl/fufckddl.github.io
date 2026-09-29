@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-29T10:05:00Z",
+  "title": "Design System: 이창렬 포트폴리오",
+  "extensions": {
+    "shadows": [
+      { "name": "dialog", "value": "0 18px 65px rgb(10 20 13 / 18%)", "purpose": "Project detail dialog elevation" }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Short entrances and interaction feedback" }
+    ],
+    "breakpoints": [
+      { "name": "compact-desktop", "value": "1100px" },
+      { "name": "mobile", "value": "760px" },
+      { "name": "single-project-column", "value": "440px" }
+    ]
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "Image-led developer portfolio",
+    "overview": "Real profile and project imagery with restrained typography and consistent section rows.",
+    "keyCharacteristics": ["Neutral surfaces", "Green accents", "Consistent separators", "Visible project evidence"],
+    "dos": ["Preserve real content and assets", "Verify both themes and mobile navigation"],
+    "donts": ["Decorative grids", "Nested panels", "Repeated scroll reveals"]
+  }
+}
