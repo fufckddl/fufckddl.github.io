@@ -5,6 +5,7 @@ export default async function verifyPortfolio(page) {
     await page.reload({ waitUntil: "networkidle" });
     const result = await page.evaluate(async () => {
       const images = [...document.querySelectorAll(".project-media img")];
+      images.forEach((image) => { image.loading = "eager"; });
       await Promise.all(images.map((image) => image.decode().catch(() => {})));
       return {
         navigation: [...document.querySelectorAll("header nav a")].map((link) => link.textContent),
