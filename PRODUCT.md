@@ -11,7 +11,7 @@ Present 이창렬's development experience, skills, education and projects. The 
 ## Confirmed Constraints
 
 - Desktop is the primary design viewport; mobile must remain usable.
-- Section order: 소개, 경험, 스킬, 프로젝트, 연락.
+- Section order: 소개, 경험, 활동, 스킬, 프로젝트, 연락.
 - Preserve project content, existing profile photograph and project images.
 - Projects and linked experience entries open an accessible detail dialog with description, period and repository links.
 - Preserve light/dark mode, image-based skill logos, graduation status and GPA 3.85/4.5.

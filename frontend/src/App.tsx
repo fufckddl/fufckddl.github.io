@@ -7,11 +7,17 @@ import "./styles.css";
 
 const sectionIds = {
   소개: "about",
-  프로젝트: "projects",
   경험: "experience",
+  활동: "activities",
   스킬: "skills",
+  프로젝트: "projects",
   연락: "contact",
 } as const;
+
+const activities = [
+  { title: "호서SW교육봉사단", description: "호서대학교 SW 교육봉사단 활동" },
+  { title: "호서서포터즈", description: "호서대학교 서포터즈 활동" },
+];
 
 function splitHeroTitle(title: string) {
   if (title === fallbackPortfolio.hero.title) {
@@ -23,36 +29,36 @@ function splitHeroTitle(title: string) {
 
 const projectImages = {
   "GIS Data Research Hub": {
-    imageSrc: "/assets/projects/cover-gisdatahub.webp",
-    imageAlt: "서울 CCTV 밀도 지도 화면과 GIS Data Research Hub 프로젝트명이 포함된 대표 이미지",
+    imageSrc: "/assets/projects/cover-gisdatahub-v2.jpg",
+    imageAlt: "GisDataHub 이름과 지도 그래픽으로 구성한 프로젝트 커버",
   },
   GitCard: {
-    imageSrc: "/assets/projects/cover-gitcard.webp",
-    imageAlt: "GitHub README 제작 서비스 로그인 화면과 GitCard 프로젝트명이 포함된 대표 이미지",
+    imageSrc: "/assets/projects/cover-gitcard-v2.jpg",
+    imageAlt: "GitCard 이름과 프로필 카드 그래픽으로 구성한 프로젝트 커버",
   },
   HoseoLife: {
-    imageSrc: "/assets/projects/cover-hoseolife.webp",
-    imageAlt: "호서대학교 커뮤니티 모바일 화면과 HoseoLife 프로젝트명이 포함된 대표 이미지",
+    imageSrc: "/assets/projects/cover-hoseolife-v2.jpg",
+    imageAlt: "HoseoLife 이름과 모바일 커뮤니티 그래픽으로 구성한 프로젝트 커버",
   },
   SummarIQ: {
-    imageSrc: "/assets/projects/cover-summariq.webp",
-    imageAlt: "회의 음성 파형과 요약 작업 화면을 표현한 SummarIQ 대표 이미지",
+    imageSrc: "/assets/projects/cover-summariq-v2.jpg",
+    imageAlt: "SummarIQ 이름과 음성 요약 그래픽으로 구성한 프로젝트 커버",
   },
   OneLineMind: {
-    imageSrc: "/assets/projects/cover-onelinemind.webp",
-    imageAlt: "활동 선택, 감정 달력, 기록 화면과 OneLineMind 프로젝트명이 포함된 대표 이미지",
+    imageSrc: "/assets/projects/cover-onelinemind-v2.jpg",
+    imageAlt: "OneLineMind 이름과 감정 기록 그래픽으로 구성한 프로젝트 커버",
   },
   Pitches: {
-    imageSrc: "/assets/projects/cover-pitches.webp",
-    imageAlt: "발표 감정 분석 모바일 화면과 Pitches 프로젝트명이 포함된 대표 이미지",
+    imageSrc: "/assets/projects/cover-pitches-v2.jpg",
+    imageAlt: "Pitches 이름과 마이크 그래픽으로 구성한 프로젝트 커버",
   },
   ROUTY: {
-    imageSrc: "/assets/projects/cover-routy.webp",
-    imageAlt: "소아 ADHD 아동 일상 관리 서비스 화면과 ROUTY 프로젝트명이 포함된 대표 이미지",
+    imageSrc: "/assets/projects/cover-routy-v2.jpg",
+    imageAlt: "ROUTY 이름과 일상 및 수면 그래픽으로 구성한 프로젝트 커버",
   },
   "Korean NLP Models": {
-    imageSrc: "/assets/projects/cover-korean-nlp-models.webp",
-    imageAlt: "감정 분류와 공감 생성 모델 흐름을 표현한 Korean NLP Models 대표 이미지",
+    imageSrc: "/assets/projects/cover-korean-nlp-models-v2.jpg",
+    imageAlt: "Korean NLP Models 이름과 대화 그래픽으로 구성한 프로젝트 커버",
   },
 } satisfies Record<string, Pick<Project, "imageSrc" | "imageAlt">>;
 
@@ -455,7 +461,7 @@ export default function App() {
           </span>
         </a>
         <nav id="main-navigation" className={`nav-links ${isNavOpen ? "is-open" : ""}`} aria-label="주요 섹션">
-          {portfolio.profile.navigation.map((label) => (
+          {Object.keys(sectionIds).map((label) => (
             <a
               key={label}
               href={`#${sectionIds[label as keyof typeof sectionIds]}`}
@@ -597,7 +603,7 @@ export default function App() {
             ))}
           </div>
           <div className="profile-detail-grid" aria-label="추가 경험 정보">
-            {portfolio.experienceDetails.map((section) => (
+            {portfolio.experienceDetails.filter((section) => section.title !== "교육봉사").map((section) => (
               <article className="profile-detail-card reveal-on-scroll" key={section.title}>
                 <h3>{section.title}</h3>
                 <div className="profile-detail-list">
@@ -610,6 +616,20 @@ export default function App() {
                     </div>
                   ))}
                 </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="activities section-shell" id="activities" aria-labelledby="activities-title">
+          <div className="section-heading section-heading-solo">
+            <h2 id="activities-title">활동</h2>
+          </div>
+          <div className="activity-list">
+            {activities.map((activity) => (
+              <article key={activity.title}>
+                <h3>{activity.title}</h3>
+                <p>{activity.description}</p>
               </article>
             ))}
           </div>

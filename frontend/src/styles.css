@@ -122,6 +122,10 @@ svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width:
 .skill-name { font-size: 12px; font-weight: 500; max-width: 125px; overflow-wrap: anywhere; }
 html[data-theme="dark"] .skill-icon-frame img.is-dark-monochrome { filter: brightness(0) invert(1); }
 html[data-theme="dark"] .skill-icon-frame img.is-dark-restored { filter: brightness(0) invert(0.9); }
+.activity-list { display: grid; gap: 28px; }
+.activity-list article + article { border-top: 1px solid var(--line); padding-top: 28px; }
+.activity-list h3 { font-size: 20px; font-weight: 600; }
+.activity-list p { font-size: 13px; color: var(--muted); margin-top: 9px; }
 .projects { display: block; }
 .projects .section-heading { margin-bottom: 36px; }
 .project-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 28px; }
